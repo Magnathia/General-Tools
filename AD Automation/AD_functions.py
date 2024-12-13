@@ -38,21 +38,38 @@ def get_highest_uidNumber():
         print(f"An error occurred: {e}")
         return -1
 
-def get_users_with_blank_uidNumber(users):
+def get_users_with_blank_uidNumber():
     """
-    Function to find users with a blank uidNumber attribute.
+    Function to find users with a blank uidNumber attribute from Active Directory.
     
-    Args:
-        users (list): List of user dictionaries with 'uidNumber' and 'username' attributes.
-        
     Returns:
         list: List of usernames with a blank uidNumber.
     """
-    users_with_blank_uid = []
-    for user in users:
-        if 'uidNumber' not in user or user['uidNumber'] == '':
-            users_with_blank_uid.append(user['username'])
-    return users_with_blank_uid
+    try:
+        # PowerShell command to import the Active Directory module and get all users and their uidNumber
+        command = (
+            "if (-not (Get-Module -ListAvailable -Name ActiveDirectory)) { "
+            "Install-WindowsFeature RSAT-AD-PowerShell; "
+            "Import-Module ActiveDirectory; "
+            "} "
+            "Get-ADUser -Filter * -Property uidNumber | "
+            "Where-Object { $_.uidNumber -eq $null } | "
+            "Select-Object -ExpandProperty SamAccountName"
+        )
+        
+        # Execute the PowerShell command and capture the output
+        result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            print(f"Failed to retrieve users with blank uidNumber: {result.stderr}")
+            return []
+        
+        usernames = result.stdout.split()
+        
+        return usernames
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
 
 def create_ad_user():
     """
