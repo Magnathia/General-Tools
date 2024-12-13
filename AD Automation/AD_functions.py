@@ -57,7 +57,7 @@ def get_users_with_blank_uidNumber():
             f"$ou = '{USERS_OU}'; "
             f"$excludeOUs = @({', '.join([f'\"{ou}\"' for ou in EXCLUDE_OUS])}); "
             "Get-ADUser -SearchBase $ou -Filter * -Property uidNumber, DistinguishedName | "
-            "Where-Object { $_.uidNumber -eq $null -and $excludeOUs -notcontains $_.DistinguishedName } | "
+            "Where-Object { $_.uidNumber -eq $null -and ($excludeOUs -notcontains $_.DistinguishedName -and $_.DistinguishedName -notmatch 'OU=SysAdmin|OU=Supplementary') } | "
             "Select-Object -ExpandProperty SamAccountName"
         )
         
