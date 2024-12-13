@@ -41,6 +41,9 @@ if (Test-Path -Path $venvActivate) {
 # Install required packages (if any)
 # python -m pip install -r requirements.txt
 
+# Add the current directory to the Python path
+$env:PYTHONPATH = (Get-Location).Path
+
 # Prompt the user to select a function to run
 Write-Output "Select a function to run from AD_functions.py:"
 Write-Output "1. get_highest_uidNumber"
