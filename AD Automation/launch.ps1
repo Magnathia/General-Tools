@@ -41,6 +41,9 @@ if (Test-Path -Path $venvActivate) {
 # Install required packages (if any)
 # python -m pip install -r requirements.txt
 
+# Change to the script's directory
+Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+
 # Add the current directory to the Python path
 $env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)"
 
