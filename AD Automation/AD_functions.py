@@ -4,10 +4,10 @@ import subprocess
 
 def get_highest_uidNumber():
     """
-    Function to find the highest uidNumber attribute from Active Directory users.
+    Function to find the highest uidNumber attribute below 3500 from Active Directory users.
     
     Returns:
-        int: The highest uidNumber found.
+        int: The highest uidNumber found below 3500.
     """
     try:
         # PowerShell command to import the Active Directory module and get all users and their uidNumber
@@ -17,7 +17,7 @@ def get_highest_uidNumber():
             "Import-Module ActiveDirectory; "
             "} "
             "Get-ADUser -Filter * -Property uidNumber | "
-            "Where-Object { $_.uidNumber -ne $null } | "
+            "Where-Object { $_.uidNumber -ne $null -and $_.uidNumber -lt 3500 } | "
             "Select-Object -ExpandProperty uidNumber"
         )
         
