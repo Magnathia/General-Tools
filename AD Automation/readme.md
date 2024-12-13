@@ -31,32 +31,37 @@ This project contains scripts to automate Active Directory (AD) user management 
 
 ## Instructions
 
-1. **Ensure Python is installed**:
+1. **Clone the repository**:
+    - Open a terminal or PowerShell window.
+    - Navigate to the directory where you want to clone the repository.
+    - Run the command: `git clone https://github.com/Magnathia/General-Tools.git`
+
+2. **Ensure Python is installed**:
     - The `launch.ps1` script checks if Python is installed and installs it if not.
 
-2. **Set up the virtual environment**:
+3. **Set up the virtual environment**:
     - The `launch.ps1` script sets up a virtual environment for the project.
 
-3. **Run the PowerShell script**:
+4. **Run the PowerShell script**:
     - Open PowerShell and navigate to the project directory.
     - Run the script: `.\launch.ps1`
     - Follow the prompts to select and run a function from `AD_functions.py`.
 
-4. **Select a function to run**:
+5. **Select a function to run**:
     - The script will prompt you to select one of the following functions to run:
         1. `get_highest_uidNumber`
         2. `get_users_with_blank_uidNumber`
         3. `create_ad_user`
         4. `add_user_to_ad`
 
-5. **Deactivate the virtual environment**:
+6. **Deactivate the virtual environment**:
     - The script will automatically deactivate the virtual environment after execution.
 
 ## Example Usage
 
 ```powershell
 # Navigate to the project directory
-cd "C:\Users\rsmith\Desktop\AD Automation"
+cd "C:\Users\Desktop\AD Automation"
 
 # Run the PowerShell script
 .\launch.ps1
