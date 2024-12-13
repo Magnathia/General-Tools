@@ -42,7 +42,7 @@ if (Test-Path -Path $venvActivate) {
 # python -m pip install -r requirements.txt
 
 # Add the current directory to the Python path
-$env:PYTHONPATH = (Get-Location).Path
+$env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)"
 
 # Prompt the user to select a function to run
 Write-Output "Select a function to run from AD_functions.py:"
