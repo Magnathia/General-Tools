@@ -1,7 +1,7 @@
 # ...existing code...
 
 import subprocess
-from variables import DOMAIN, PMEL_USERS_OU, EXCLUDE_OUS
+from variables import DOMAIN, USERS_OU, EXCLUDE_OUS
 
 def get_highest_uidNumber():
     """
