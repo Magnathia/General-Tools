@@ -2,9 +2,20 @@
 $python = Get-Command python -ErrorAction SilentlyContinue
 if (-not $python) {
     Write-Output "Python is not installed. Installing Python..."
-    Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe" -OutFile "python-installer.exe"
-    Start-Process -FilePath "python-installer.exe" -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
-    Remove-Item -Path "python-installer.exe"
+    $pythonInstallerUrl = "https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe"
+    $pythonInstallerPath = "$env:TEMP\python-installer.exe"
+    Invoke-WebRequest -Uri $pythonInstallerUrl -OutFile $pythonInstallerPath
+
+    # Run the installer
+    Start-Process -FilePath $pythonInstallerPath -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
+
+    # Clean up
+    Remove-Item -Path $pythonInstallerPath
+
+    # Refresh environment variables
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path", [System.EnvironmentVariableTarget]::Machine)
+
+    # Verify installation
     $python = Get-Command python -ErrorAction SilentlyContinue
     if (-not $python) {
         Write-Error "Python installation failed."
