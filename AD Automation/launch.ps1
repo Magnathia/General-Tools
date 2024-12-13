@@ -30,7 +30,13 @@ if (-Not (Test-Path -Path "./venv")) {
 }
 
 # Activate the virtual environment
-& .\venv\Scripts\Activate
+$venvActivate = Join-Path -Path "./venv/Scripts" -ChildPath "Activate.ps1"
+if (Test-Path -Path $venvActivate) {
+    & $venvActivate
+} else {
+    Write-Error "Failed to activate the virtual environment."
+    exit 1
+}
 
 # Install required packages (if any)
 # python -m pip install -r requirements.txt
