@@ -63,7 +63,7 @@ switch ($selection) {
     }
     2 {
         Write-Output "Running get_users_with_blank_uidNumber..."
-        python -c "from AD_functions import get_users_with_blank_uidNumber; print(get_users_with_blank_uidNumber([]))"
+        python -c "from AD_functions import get_users_with_blank_uidNumber; print(get_users_with_blank_uidNumber())"
     }
     3 {
         Write-Output "Running create_ad_user..."
