@@ -1,6 +1,7 @@
 # ...existing code...
 
 import subprocess
+from variables import DOMAIN, PMEL_USERS_OU, EXCLUDE_OUS
 
 def get_highest_uidNumber():
     """
@@ -40,20 +41,23 @@ def get_highest_uidNumber():
 
 def get_users_with_blank_uidNumber():
     """
-    Function to find users with a blank uidNumber attribute from Active Directory.
+    Function to find users with a blank uidNumber attribute from the "PMEL Users" OU,
+    excluding the "SysAdmin" and "Supplementary" OUs.
     
     Returns:
         list: List of usernames with a blank uidNumber.
     """
     try:
-        # PowerShell command to import the Active Directory module and get all users and their uidNumber
+        # PowerShell command to import the Active Directory module and get users with blank uidNumber
         command = (
             "if (-not (Get-Module -ListAvailable -Name ActiveDirectory)) { "
             "Install-WindowsFeature RSAT-AD-PowerShell; "
             "Import-Module ActiveDirectory; "
             "} "
-            "Get-ADUser -Filter * -Property uidNumber | "
-            "Where-Object { $_.uidNumber -eq $null } | "
+            f"$ou = '{USERS_OU}'; "
+            f"$excludeOUs = @({', '.join([f'\"{ou}\"' for ou in EXCLUDE_OUS])}); "
+            "Get-ADUser -SearchBase $ou -Filter * -Property uidNumber, DistinguishedName | "
+            "Where-Object { $_.uidNumber -eq $null -and $excludeOUs -notcontains $_.DistinguishedName } | "
             "Select-Object -ExpandProperty SamAccountName"
         )
         
