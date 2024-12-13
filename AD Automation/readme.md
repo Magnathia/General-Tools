@@ -5,18 +5,17 @@ This project contains scripts to automate Active Directory (AD) user management 
 ## Files
 
 - `AD_functions.py`: Contains Python functions for various AD user management tasks.
-- `launch.ps1`: PowerShell script to set up the environment and run functions from `AD_functions.py`.
+- `launch.ps1`: PowerShell script to set up the environment, update the repository, and run functions from `AD_functions.py`.
+- `variables.py`: Contains environment-specific information such as Domain and OUs.
 
 ## Functions in `AD_functions.py`
 
-1. **get_highest_uidNumber(users)**:
-    - Finds the highest `uidNumber` attribute from a list of users.
-    - Args: `users` (list): List of user dictionaries with 'uidNumber' attribute.
-    - Returns: `int`: The highest `uidNumber` found.
+1. **get_highest_uidNumber()**:
+    - Finds the highest `uidNumber` attribute below 3500 from Active Directory users.
+    - Returns: `int`: The highest `uidNumber` found below 3500.
 
-2. **get_users_with_blank_uidNumber(users)**:
-    - Finds users with a blank `uidNumber` attribute.
-    - Args: `users` (list): List of user dictionaries with 'uidNumber' and 'username' attributes.
+2. **get_users_with_blank_uidNumber()**:
+    - Finds users with a blank `uidNumber` attribute from the "PMEL Users" OU, excluding the "SysAdmin" and "Supplementary" OUs.
     - Returns: `list`: List of usernames with a blank `uidNumber`.
 
 3. **create_ad_user()**:
@@ -45,7 +44,7 @@ This project contains scripts to automate Active Directory (AD) user management 
 4. **Run the PowerShell script**:
     - Open PowerShell and navigate to the project directory.
     - Run the script: `.\launch.ps1`
-    - Follow the prompts to select and run a function from `AD_functions.py`.
+    - The script will update the repository and prompt you to select and run a function from `AD_functions.py`.
 
 5. **Select a function to run**:
     - The script will prompt you to select one of the following functions to run:

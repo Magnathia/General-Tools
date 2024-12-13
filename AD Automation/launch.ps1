@@ -1,3 +1,17 @@
+# Check if Git is installed
+$git = Get-Command git -ErrorAction SilentlyContinue
+if (-not $git) {
+    Write-Output "Git is not installed. Please install Git before running this script."
+    exit 1
+}
+
+# Change to the script's directory
+Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
+
+# Pull the latest changes from the repository
+Write-Output "Updating the repository..."
+git pull
+
 # Check if Python is installed
 $python = Get-Command python -ErrorAction SilentlyContinue
 if (-not $python) {
@@ -41,11 +55,24 @@ if (Test-Path -Path $venvActivate) {
 # Install required packages (if any)
 # python -m pip install -r requirements.txt
 
-# Change to the script's directory
-Set-Location -Path (Split-Path -Parent $MyInvocation.MyCommand.Definition)
-
 # Add the current directory to the Python path
 $env:PYTHONPATH = "$env:PYTHONPATH;$(Get-Location)"
+
+# Create variables.py if it does not exist
+$variablesPath = Join-Path -Path (Get-Location) -ChildPath "variables.py"
+if (-Not (Test-Path -Path $variablesPath)) {
+    Write-Output "Creating variables.py..."
+    @"
+DOMAIN = "yourdomain.com"
+USERS_OU = "OU=PMEL Users,DC=yourdomain,DC=com"
+EXCLUDE_OUS = [
+    "OU=SysAdmin,OU=PMEL Users,DC=yourdomain,DC=com",
+    "OU=Supplementary,OU=PMEL Users,DC=yourdomain,DC=com"
+]
+"@ | Out-File -FilePath $variablesPath -Encoding utf8
+    Write-Output "Please edit the variables.py file with your environment-specific information and run the script again."
+    exit 0
+}
 
 # Prompt the user to select a function to run
 Write-Output "Select a function to run from AD_functions.py:"
